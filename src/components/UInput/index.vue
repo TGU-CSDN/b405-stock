@@ -105,6 +105,9 @@ export default defineComponent({
       }
     },
   },
+  mounted() {
+    this.inputValue = this.value;
+  },
   methods: {
     handleInput(e: any) {
       this.$emit("onInput", e);

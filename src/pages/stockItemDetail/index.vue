@@ -12,14 +12,14 @@
 </template>
 
 <script lang="ts">
-import { IStockItem, IStockItemWithInfo } from "@/types/StockItem";
-import { defineComponent, ref } from "vue";
+import { IStockItemWithInfo } from "@/types/StockItem";
+import { defineComponent, Ref, ref } from "vue";
 import Top from "./components/Top/index.vue";
 import Content from "./components/Content/index.vue";
 import { showLoading, hideLoading } from "@/utils/helper";
 
 const stockItemID = ref("");
-const stockItemData = ref(null);
+const stockItemData: Ref<IStockItemWithInfo | null> = ref(null);
 
 async function getItemData() {
   showLoading();

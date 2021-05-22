@@ -47,10 +47,10 @@ export default defineComponent({
   setup(props) {
     function showActionSheet() {
       uni.showActionSheet({
-        itemList: ["我的库存", "编辑货品信息"],
+        itemList: ["编辑货品信息"],
         success: (res: { tapIndex: number }) => {
           switch (res.tapIndex) {
-            case 1: // 编辑货品信息
+            case 0: // 编辑货品信息
               navigateTo("/pages/editStockItem/index", { id: props.data._id });
               break;
           }

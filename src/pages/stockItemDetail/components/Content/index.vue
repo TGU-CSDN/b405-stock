@@ -1,17 +1,39 @@
 <template>
   <view class="content">
-    <StockItemOwnerInfo
-      v-for="item in data"
-      :key="item.id"
-      :data="item"
-    />
+    <view class="tabs">
+      <UTabs
+        active-color="#197ae5"
+        :current="currentTab"
+        :tabs="tabs"
+        :min-width="325"
+        @change="handleTabChange"
+      />
+    </view>
+    <view
+      v-if="currentTab===0"
+      class="owner-info"
+    >
+      <StockItemOwnerInfo
+        v-for="item in tdata"
+        :key="item.id"
+        :data="item"
+      />
+    </view>
+    <view
+      v-if="currentTab===1"
+      class="my-stock"
+    >
+      <MyStock :data="data" />
+    </view>
   </view>
 </template>
 
 <script lang="ts">
-import { IStockItemOwnerInfo } from "@/types/StockItem";
-import { defineComponent, ref } from "vue";
+import { IStockItemWithInfo, IStockItemOwnerInfo } from "@/types/StockItem";
+import { defineComponent, PropType, ref } from "vue";
 import StockItemOwnerInfo from "./StockItemOwnerInfo.vue";
+import MyStock from "./MyStock.vue";
+import UTabs from "@/components/UTabs/index.vue";
 
 const testData: Array<IStockItemOwnerInfo> = [
   {
@@ -39,11 +61,23 @@ const testData: Array<IStockItemOwnerInfo> = [
 ];
 
 export default defineComponent({
-  components: { StockItemOwnerInfo },
+  components: { StockItemOwnerInfo, MyStock, UTabs },
+  props: {
+    data: {
+      type: Object as PropType<IStockItemWithInfo>,
+      default: null,
+    },
+  },
   setup() {
-    const data = ref(testData);
+    const tdata = ref(testData);
+    const currentTab = ref(0);
+    const tabs = ["库存列表", "我的库存"];
 
-    return { data };
+    function handleTabChange(index: number) {
+      currentTab.value = index;
+    }
+
+    return { tdata, currentTab, tabs, handleTabChange };
   },
 });
 </script>
@@ -54,5 +88,9 @@ export default defineComponent({
   background: #ffffff;
   border-radius: 16rpx;
   padding: 48rpx;
+}
+
+.tabs {
+  margin-bottom: 48rpx;
 }
 </style>
