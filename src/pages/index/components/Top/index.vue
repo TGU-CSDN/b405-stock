@@ -51,6 +51,8 @@ export default defineComponent({
         if (checkRes.result.success) {
           const id = checkRes.result.data._id;
           navigateTo("/pages/stockItemDetail/index", { id });
+        } else {
+          showToast("未找到该货品");
         }
       } catch (e) {
         showToast("扫码失败");
