@@ -33,6 +33,7 @@
 
 <script lang="ts">
 import { IStockItem } from "@/types/StockItem";
+import { navigateTo } from "@/utils/helper";
 import { defineComponent, PropType } from "vue";
 // import { navigateTo } from "@/utils/helper";
 
@@ -43,15 +44,16 @@ export default defineComponent({
       default: null,
     },
   },
-  setup() {
+  setup(props) {
     function showActionSheet() {
       uni.showActionSheet({
-        itemList: ["我的库存", "库存管理"],
-        success: function (res) {
-          console.log("选中了第" + (res.tapIndex + 1) + "个按钮");
-        },
-        fail: function (res) {
-          console.log(res.errMsg);
+        itemList: ["我的库存", "编辑货品信息"],
+        success: (res: { tapIndex: number }) => {
+          switch (res.tapIndex) {
+            case 1: // 编辑货品信息
+              navigateTo("/pages/editStockItem/index", { id: props.data._id });
+              break;
+          }
         },
       });
     }

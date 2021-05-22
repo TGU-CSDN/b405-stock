@@ -16,11 +16,13 @@ import { IStockItem, IStockItemWithInfo } from "@/types/StockItem";
 import { defineComponent, ref } from "vue";
 import Top from "./components/Top/index.vue";
 import Content from "./components/Content/index.vue";
+import { showLoading, hideLoading } from "@/utils/helper";
 
 const stockItemID = ref("");
 const stockItemData = ref(null);
 
 async function getItemData() {
+  showLoading();
   const res: any = await wx.cloud.callFunction({
     name: "get_stock_item",
     data: {
@@ -28,6 +30,7 @@ async function getItemData() {
     },
   });
   stockItemData.value = res.result.data;
+  hideLoading();
 }
 
 export default defineComponent({

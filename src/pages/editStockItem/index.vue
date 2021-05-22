@@ -35,19 +35,42 @@ import { computed, defineComponent, Ref, ref } from "vue";
 import ImageUploader from "@/components/ImageUploader/index.vue";
 import UInput from "@/components/UInput/index.vue";
 import UButton from "@/components/UButton/index.vue";
-import { navigateBack, showToast } from "@/utils/helper";
-import { IStockItem } from "@/types/StockItem";
+import {
+  hideLoading,
+  navigateBack,
+  showLoading,
+  showToast,
+} from "@/utils/helper";
+import { IStockItem, IStockItemWithInfo } from "@/types/StockItem";
+import store from "@/store";
+import { ActionTypes } from "@/enums/actionTypes";
+import { useStore } from "vuex";
 
 const editID = ref("");
+const fileList: Ref<Array<string>> = ref([]);
+const stockItemName = ref("");
+const stockItemCode = ref("");
+
+async function getItemData() {
+  showLoading();
+  const res: any = await wx.cloud.callFunction({
+    name: "get_stock_item",
+    data: {
+      _id: editID.value,
+    },
+  });
+  const data: IStockItemWithInfo = res.result.data;
+  fileList.value = [data.image];
+  stockItemName.value = data.name;
+  stockItemCode.value = data.code;
+  hideLoading();
+}
 
 export default defineComponent({
   components: { ImageUploader, UInput, UButton },
   setup() {
+    const store = useStore();
     const isLoading = ref(false);
-
-    const fileList: Ref<Array<string>> = ref([]);
-    const stockItemName = ref("");
-    const stockItemCode = ref("");
 
     const stockItemPhoto = computed(() => {
       return fileList.value && fileList.value.length ? [fileList.value[0]] : [];
@@ -98,7 +121,7 @@ export default defineComponent({
           data,
         });
         showToast("保存成功", "success");
-        // TODO: refresh stock list
+        store.dispatch(ActionTypes.getStockList);
         navigateBack();
       } catch (e) {
         showToast("保存失败");
@@ -115,6 +138,22 @@ export default defineComponent({
       handleScanCode,
       isLoading,
     };
+  },
+  onLoad(query: { id: string }) {
+    editID.value = query.id;
+  },
+  onShow() {
+    if (editID.value) {
+      getItemData();
+      uni.setNavigationBarTitle({
+        title: "编辑货品信息",
+      });
+    }
+  },
+  onUnload() {
+    fileList.value = [];
+    stockItemName.value = "";
+    stockItemCode.value = "";
   },
 });
 </script>

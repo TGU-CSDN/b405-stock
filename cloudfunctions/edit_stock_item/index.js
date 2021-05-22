@@ -18,9 +18,11 @@ exports.main = async (event, context) => {
         _id: event._id,
       })
       .update({
-        image: event.image,
-        name: event.name,
-        code: event.code,
+        data: {
+          image: event.image,
+          name: event.name,
+          code: event.code,
+        },
       });
   } else {
     // add
