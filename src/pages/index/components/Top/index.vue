@@ -21,20 +21,40 @@
 </template>
 
 <script lang="ts">
+import {
+  hideLoading,
+  navigateTo,
+  showLoading,
+  showToast,
+} from "@/utils/helper";
 import { defineComponent } from "vue";
 // import { navigateTo } from "@/utils/helper";
 
 export default defineComponent({
   props: {},
   setup() {
-    function handleClickScan() {
-      uni.scanCode({
-        onlyFromCamera: true,
-        scanType: ["barCode"],
-        success: (res: any) => {
-          console.log(res);
-        },
-      });
+    async function handleClickScan() {
+      try {
+        const res: any = await uni.scanCode({
+          onlyFromCamera: true,
+          scanType: ["barCode"],
+        });
+        const code = res.result;
+        showLoading();
+        const checkRes: any = await wx.cloud.callFunction({
+          name: "check_stock_item",
+          data: {
+            code,
+          },
+        });
+        hideLoading();
+        if (checkRes.result.success) {
+          const id = checkRes.result.data._id;
+          navigateTo("/pages/stockItemDetail/index", { id });
+        }
+      } catch (e) {
+        showToast("扫码失败");
+      }
     }
 
     return { handleClickScan };
