@@ -9,10 +9,17 @@ export interface IStockItemOwnerInfo {
 }
 
 export interface IStockItem {
-  id: number;
+  _id: string;
   name: string;
   image: string;
-  code: number;
+  code: string;
+}
+
+export interface IStockItemWithInfo {
+  _id: string;
+  name: string;
+  image: string;
+  code: string;
   stock_number: number;
-  stock_list?: Array<IStockItemOwnerInfo>;
+  stock_list: Array<IStockItemOwnerInfo>;
 }

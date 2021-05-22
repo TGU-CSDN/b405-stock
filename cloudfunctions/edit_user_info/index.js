@@ -23,7 +23,7 @@ exports.main = async (event, context) => {
     data.avatar_url = avatar_url;
   }
 
-  query.update({
+  await query.update({
     data,
   });
 

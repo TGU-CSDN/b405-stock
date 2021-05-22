@@ -21,6 +21,7 @@
           :placeholder="placeholder"
           placeholder-class="u-input--placeholder"
           :maxlength="maxlength"
+          :disabled="disabled"
           @input="handleInput"
           @focus="handleFocus"
           @blur="handleBlur"
@@ -43,6 +44,10 @@ import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   props: {
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
     type: {
       type: String,
       default: "text",

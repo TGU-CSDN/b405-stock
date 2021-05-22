@@ -13,6 +13,12 @@
         title="个人资料"
         path="/pages/profile/index"
       />
+      <MenuItem
+        v-if="logged"
+        icon="plus"
+        title="添加货品"
+        path="/pages/editStockItem/index"
+      />
       <!-- <MenuItem
         v-if="logged"
         icon="minus"

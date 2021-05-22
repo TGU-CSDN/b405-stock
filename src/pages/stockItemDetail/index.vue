@@ -10,16 +10,16 @@
 </template>
 
 <script lang="ts">
-import { IStockItem } from "@/types/StockItem";
+import { IStockItem, IStockItemWithInfo } from "@/types/StockItem";
 import { defineComponent, ref } from "vue";
 import Top from "./components/Top/index.vue";
 import Content from "./components/Content/index.vue";
 
-const testData: IStockItem = {
-  id: 2,
+const testData: IStockItemWithInfo = {
+  _id: "2",
   name: "百事可乐",
   image: "https://i.loli.net/2021/05/19/lVPgZ6NEGUv7k3q.png",
-  code: 11451499,
+  code: "11451499",
   stock_number: 3,
   stock_list: [
     {

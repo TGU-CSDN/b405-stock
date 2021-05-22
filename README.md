@@ -1,4 +1,4 @@
-# fwwb2020-volunteer
+# b405-stock
 
 ## Project setup
 ```

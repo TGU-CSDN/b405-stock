@@ -2,7 +2,7 @@
   <div class="list">
     <StockItem
       v-for="item in list"
-      :key="item.id"
+      :key="item._id"
       :data="item"
       class="list__item"
       @tap="handleClick(item)"
@@ -26,7 +26,7 @@ export default defineComponent({
   },
   setup() {
     function handleClick(item: IStockItem) {
-      navigateTo("/pages/stockItemDetail/index", { id: item.id });
+      navigateTo("/pages/stockItemDetail/index", { id: item._id });
     }
 
     return { handleClick };

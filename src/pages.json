@@ -30,6 +30,12 @@
       "style": {
         "navigationBarTitleText": "个人资料"
       }
+    },
+    {
+      "path": "pages/editStockItem/index",
+      "style": {
+        "navigationBarTitleText": "货品管理"
+      }
     }
   ],
   "globalStyle": {
@@ -67,6 +73,10 @@
       {
         "name": "我",
         "path": "pages/me/index"
+      },
+      {
+        "name": "添加货品",
+        "path": "pages/editStockItem/index"
       }
     ]
   }
