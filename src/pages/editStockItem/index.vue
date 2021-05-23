@@ -141,8 +141,6 @@ export default defineComponent({
   },
   onLoad(query: { id: string }) {
     editID.value = query.id;
-  },
-  onShow() {
     if (editID.value) {
       getItemData();
       uni.setNavigationBarTitle({
