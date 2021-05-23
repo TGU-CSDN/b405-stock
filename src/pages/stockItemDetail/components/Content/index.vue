@@ -10,7 +10,7 @@
       />
     </view>
     <view
-      v-if="currentTab===0"
+      v-show="currentTab===0"
       class="owner-info"
     >
       <StockItemOwnerInfo
@@ -20,7 +20,7 @@
       />
     </view>
     <view
-      v-if="currentTab===1"
+      v-show="currentTab===1"
       class="my-stock"
     >
       <MyStock :data="data" />
@@ -87,7 +87,7 @@ export default defineComponent({
   position: relative;
   background: #ffffff;
   border-radius: 16rpx;
-  padding: 48rpx;
+  padding: 24rpx 48rpx;
 }
 
 .tabs {

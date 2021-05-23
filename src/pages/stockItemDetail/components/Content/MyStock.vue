@@ -11,7 +11,7 @@
         v-model="myStockPriceText"
         placeholder="请输入货品价格 (0为不出售)"
         label="价格"
-        type="number"
+        type="digit"
       />
     </view>
     <view class="action">
@@ -46,10 +46,17 @@ export default defineComponent({
     const myStockNumberText = ref("0");
     const myStockPriceText = ref("0");
 
-    async function getMyStockNumber() {}
+    async function getMyStockNumber() {
+      const res: any = await wx.cloud.callFunction({
+        name: "get_my_stock",
+      });
+      const data = res.result.data;
+      myStockNumberText.value = data.number.toString();
+      myStockPriceText.value = data.price.toString();
+    }
 
-    onMounted(() => {
-      getMyStockNumber();
+    onMounted(async () => {
+      await getMyStockNumber();
     });
 
     async function handleSave() {
@@ -68,6 +75,7 @@ export default defineComponent({
         console.error(e);
       }
       isLoading.value = false;
+      await getMyStockNumber();
     }
 
     return { myStockNumberText, myStockPriceText, handleSave, isLoading };
