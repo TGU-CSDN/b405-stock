@@ -10,6 +10,7 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const openid = wxContext.OPENID;
 
+  const _ = db.command;
   const $ = db.command.aggregate;
 
   const query = await db
@@ -17,6 +18,7 @@ exports.main = async (event, context) => {
     .aggregate()
     .match({
       stock_id: event.stock_id,
+      number: _.gt(0),
     })
     .lookup({
       from: "users",

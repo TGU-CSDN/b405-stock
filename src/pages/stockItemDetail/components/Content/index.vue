@@ -18,6 +18,10 @@
         :key="item._id"
         :data="item"
       />
+      <Empty
+        v-if="!stockOwnersData || !stockOwnersData.length"
+        message="无库存"
+      />
     </view>
     <view
       v-show="currentTab===1"
@@ -37,9 +41,10 @@ import { defineComponent, PropType, ref } from "vue";
 import StockItemOwnerInfo from "./StockItemOwnerInfo.vue";
 import MyStock from "./MyStock.vue";
 import UTabs from "@/components/UTabs/index.vue";
+import Empty from "@/components/Empty/index.vue";
 
 export default defineComponent({
-  components: { StockItemOwnerInfo, MyStock, UTabs },
+  components: { StockItemOwnerInfo, MyStock, UTabs, Empty },
   props: {
     data: {
       type: Object as PropType<IStockItemWithInfo>,

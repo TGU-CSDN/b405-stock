@@ -1,6 +1,10 @@
 <template>
   <view class="empty">
-    <text class="empty-icon iconfont icon-empty" />
+    <uni-icons
+      type="info"
+      size="64"
+      color="#979797"
+    />
     <view class="empty-text">
       {{ message }}
     </view>
@@ -30,10 +34,6 @@ export default defineComponent({
   align-items: center;
   color: $uni-text-color-grey;
   padding: 30rpx 0;
-
-  &-icon {
-    font-size: 128rpx;
-  }
 
   &-text {
     margin-top: 10rpx;
