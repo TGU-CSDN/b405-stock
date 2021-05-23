@@ -6,6 +6,7 @@
         class="item__image"
         :src="data.image"
         mode="aspectFill"
+        @click="handlePreviewPhoto(data.image)"
       />
       <div class="item__info">
         <div class="item__info__title">
@@ -58,7 +59,14 @@ export default defineComponent({
       });
     }
 
-    return { showActionSheet };
+    function handlePreviewPhoto(path: string) {
+      uni.previewImage({
+        urls: [path],
+        current: "0",
+      });
+    }
+
+    return { showActionSheet, handlePreviewPhoto };
   },
 });
 </script>
