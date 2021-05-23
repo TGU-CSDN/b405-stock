@@ -14,7 +14,7 @@
       class="owner-info"
     >
       <StockItemOwnerInfo
-        v-for="item in tdata"
+        v-for="item in stockOwnersData"
         :key="item._id"
         :data="item"
       />
@@ -38,29 +38,6 @@ import StockItemOwnerInfo from "./StockItemOwnerInfo.vue";
 import MyStock from "./MyStock.vue";
 import UTabs from "@/components/UTabs/index.vue";
 
-const testData: Array<IStockItemOwnerInfo> = [
-  {
-    _id: "1",
-    number: 3,
-    price: 3.5,
-    user: {
-      id: 1,
-      name: "陈鸿飞",
-      avatar: "https://i.loli.net/2021/05/19/lVPgZ6NEGUv7k3q.png",
-    },
-  },
-  {
-    _id: "2",
-    number: 2,
-    price: null,
-    user: {
-      id: 2,
-      name: "哈哈哈",
-      avatar: "https://i.loli.net/2021/05/19/lVPgZ6NEGUv7k3q.png",
-    },
-  },
-];
-
 export default defineComponent({
   components: { StockItemOwnerInfo, MyStock, UTabs },
   props: {
@@ -68,10 +45,13 @@ export default defineComponent({
       type: Object as PropType<IStockItemWithInfo>,
       default: null,
     },
+    stockOwnersData: {
+      type: Object as PropType<Array<IStockItemOwnerInfo>>,
+      default: null,
+    },
   },
   emits: ["update"],
   setup(props, { emit }) {
-    const tdata = ref(testData);
     const currentTab = ref(0);
     const tabs = ["库存列表", "我的库存"];
 
@@ -83,7 +63,7 @@ export default defineComponent({
       emit("update");
     }
 
-    return { tdata, currentTab, tabs, handleTabChange, handleUpdated };
+    return { currentTab, tabs, handleTabChange, handleUpdated };
   },
 });
 </script>

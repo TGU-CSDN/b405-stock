@@ -2,11 +2,11 @@
   <div class="owner-info item">
     <image
       class="item__avatar"
-      :src="data.user.avatar"
+      :src="data.user.avatar_url"
     />
     <div class="item__desc">
       <div class="item__desc__name">
-        {{ data.user.name }}
+        {{ data.user.username }}
       </div>
       <div class="item__desc__stock">
         拥有 {{ data.number }} 件

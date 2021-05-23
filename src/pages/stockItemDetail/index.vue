@@ -7,6 +7,7 @@
       <view class="content">
         <Content
           :data="stockItemData"
+          :stock-owners-data="stockOwnersData"
           @update="handleUpdated"
         />
       </view>
@@ -15,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { IStockItemWithInfo } from "@/types/StockItem";
+import { IStockItemOwnerInfo, IStockItemWithInfo } from "@/types/StockItem";
 import { defineComponent, Ref, ref } from "vue";
 import Top from "./components/Top/index.vue";
 import Content from "./components/Content/index.vue";
@@ -25,6 +26,17 @@ import { ActionTypes } from "@/enums/actionTypes";
 
 const stockItemID = ref("");
 const stockItemData: Ref<IStockItemWithInfo | null> = ref(null);
+const stockOwnersData: Ref<Array<IStockItemOwnerInfo>> = ref([]);
+
+async function getItemOwnersData() {
+  const res: any = await wx.cloud.callFunction({
+    name: "get_stock_item_owners",
+    data: {
+      stock_id: stockItemID.value,
+    },
+  });
+  stockOwnersData.value = res.result.data;
+}
 
 async function getItemData() {
   showLoading();
@@ -35,6 +47,7 @@ async function getItemData() {
     },
   });
   stockItemData.value = res.result.data;
+  await getItemOwnersData();
   hideLoading();
 }
 
@@ -50,6 +63,7 @@ export default defineComponent({
 
     return {
       stockItemData,
+      stockOwnersData,
       handleUpdated,
     };
   },
