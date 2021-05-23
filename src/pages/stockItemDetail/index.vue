@@ -76,6 +76,7 @@ export default defineComponent({
   onUnload() {
     stockItemID.value = "";
     stockItemData.value = null;
+    stockOwnersData.value = [];
   },
 });
 </script>
