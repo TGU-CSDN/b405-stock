@@ -17,6 +17,7 @@
         v-for="item in stockOwnersData"
         :key="item._id"
         :data="item"
+        @update="handleUpdated"
       />
       <Empty
         v-if="!stockOwnersData || !stockOwnersData.length"

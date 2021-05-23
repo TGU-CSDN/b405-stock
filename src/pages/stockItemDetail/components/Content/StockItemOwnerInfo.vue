@@ -17,6 +17,8 @@
         v-if="data.price"
         type="primary"
         custom-style="padding: 0 32rpx 0 30rpx"
+        :loading="isLoading"
+        @click="handleBuy"
       >
         ￥{{ data.price.toFixed(2) }}
       </UButton>
@@ -34,8 +36,9 @@
 
 <script lang="ts">
 import { IStockItemOwnerInfo } from "@/types/StockItem";
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 import UButton from "@/components/UButton/index.vue";
+import { showModal, showToast } from "@/utils/helper";
 
 export default defineComponent({
   components: { UButton },
@@ -45,7 +48,36 @@ export default defineComponent({
       default: null,
     },
   },
-  setup() {},
+  emits: ["update"],
+  setup(props, { emit }) {
+    const isLoading = ref(false);
+
+    async function handleBuy() {
+      try {
+        await showModal(
+          `￥${props.data.price!.toFixed(2)}`,
+          "是否确认核销该货品？",
+          true
+        );
+
+        isLoading.value = true;
+
+        await wx.cloud.callFunction({
+          name: "buy_stock_item",
+          data: {
+            stock_owner_id: props.data._id,
+          },
+        });
+
+        await showModal("成功", "核销成功");
+        emit("update");
+      } catch (e) {}
+
+      isLoading.value = false;
+    }
+
+    return { isLoading, handleBuy };
+  },
 });
 </script>
 
