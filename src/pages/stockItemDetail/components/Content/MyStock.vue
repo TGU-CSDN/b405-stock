@@ -67,7 +67,7 @@ export default defineComponent({
           data: {
             stock_id: props.data._id,
             number: parseInt(myStockNumberText.value, 10),
-            price: parseInt(myStockPriceText.value, 10),
+            price: Number(myStockPriceText.value),
           },
         });
         showToast("保存成功", "success");

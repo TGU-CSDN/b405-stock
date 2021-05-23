@@ -29,8 +29,8 @@ exports.main = async (event, context) => {
       })
       .update({
         data: {
-          number: event.number,
-          price: event.price,
+          number: event.number || 0,
+          price: Math.round(event.price * 10) / 10 || 0,
         },
       });
   } else {
@@ -39,8 +39,8 @@ exports.main = async (event, context) => {
       data: {
         _openid: openid,
         stock_id: event.stock_id,
-        number: event.number,
-        price: event.price,
+        number: event.number || 0,
+        price: Math.round(event.price * 10) / 10 || 0,
       },
     });
   }
