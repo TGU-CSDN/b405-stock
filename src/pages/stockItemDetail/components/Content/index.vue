@@ -5,7 +5,7 @@
         active-color="#197ae5"
         :current="currentTab"
         :tabs="tabs"
-        :min-width="325"
+        :min-width="220"
         @change="handleTabChange"
       />
     </view>
@@ -33,19 +33,32 @@
         @update="handleUpdated"
       />
     </view>
+    <view
+      v-show="currentTab===2"
+      class="stock-record"
+    >
+      <StockRecord
+        :data="stockRecordData"
+      />
+    </view>
   </view>
 </template>
 
 <script lang="ts">
-import { IStockItemWithInfo, IStockItemOwnerInfo } from "@/types/StockItem";
+import {
+  IStockItemWithInfo,
+  IStockItemOwnerInfo,
+  IStockRecord,
+} from "@/types/StockItem";
 import { defineComponent, PropType, ref } from "vue";
 import StockItemOwnerInfo from "./StockItemOwnerInfo.vue";
 import MyStock from "./MyStock.vue";
+import StockRecord from "./StockRecord.vue";
 import UTabs from "@/components/UTabs/index.vue";
 import Empty from "@/components/Empty/index.vue";
 
 export default defineComponent({
-  components: { StockItemOwnerInfo, MyStock, UTabs, Empty },
+  components: { StockItemOwnerInfo, MyStock, StockRecord, UTabs, Empty },
   props: {
     data: {
       type: Object as PropType<IStockItemWithInfo>,
@@ -55,11 +68,15 @@ export default defineComponent({
       type: Object as PropType<Array<IStockItemOwnerInfo>>,
       default: null,
     },
+    stockRecordData: {
+      type: Object as PropType<Array<IStockRecord>>,
+      default: null,
+    },
   },
   emits: ["update"],
   setup(props, { emit }) {
     const currentTab = ref(0);
-    const tabs = ["库存列表", "我的库存"];
+    const tabs = ["库存列表", "我的库存", "库存记录"];
 
     function handleTabChange(index: number) {
       currentTab.value = index;

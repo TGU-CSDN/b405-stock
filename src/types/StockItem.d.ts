@@ -1,10 +1,10 @@
-import { IUser } from './User'
+import { IUserProfile } from './User'
 
 export interface IStockItemOwnerInfo {
   _id: interface;
   number: number;
   price: number | null;
-  user: IUser;
+  user: IUserProfile;
 }
 
 export interface IStockItem {
@@ -20,4 +20,15 @@ export interface IStockItemWithInfo {
   image: string;
   code: string;
   stock_number: number;
+}
+
+export interface IStockRecord {
+  _id: string;
+  action_type: "buy" | "edit";
+  belonger_user: IUserProfile;
+  operator_user: IUserProfile;
+  old_number: number;
+  new_number: number;
+  stock_id: string;
+  time: number;
 }

@@ -1,7 +1,7 @@
 import dayjs from "@/utils/dayjs";
 
 export const useTime = () => {
-  const getCalendarTime = (time: string) => {
+  const getCalendarTime = (time: dayjs.ConfigType) => {
     return dayjs(time).calendar(dayjs(), {
       sameDay: "今天 HH:mm", // The same day ( Today at 2:30 AM )
       nextDay: "明天 HH:mm", // The next day ( Tomorrow at 2:30 AM )
@@ -12,11 +12,11 @@ export const useTime = () => {
     });
   };
 
-  const parseDate = (time: string) => {
+  const parseDate = (time: dayjs.ConfigType) => {
     return dayjs(time).format("YYYY-MM-DD");
   };
 
-  const parseDateTime = (time: string, withSecond = true) => {
+  const parseDateTime = (time: dayjs.ConfigType, withSecond = true) => {
     const template = withSecond ? "YYYY-MM-DD HH:mm:ss" : "YYYY-MM-DD HH:mm";
     return dayjs(time).format(template);
   };

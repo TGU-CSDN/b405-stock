@@ -41,6 +41,8 @@ exports.main = async (event, context) => {
     };
   }
 
+  const oldStockNumber = data[0].number;
+
   await db
     .collection("user_stock")
     .where({
@@ -52,7 +54,26 @@ exports.main = async (event, context) => {
       },
     });
 
-  // TODO: 记录
+  // 添加购买记录
+  const newQuery = await db
+    .collection("user_stock")
+    .where({
+      _id: event.stock_owner_id,
+    })
+    .get();
+  const newData = newQuery.data[0];
+
+  await db.collection("stock_record").add({
+    data: {
+      action_type: "buy",
+      time: new Date().getTime(),
+      stock_id: data[0].stock_id,
+      belonger_openid: data[0]._openid, // 事件归属者
+      operator_openid: openid, // 事件操作者
+      old_number: oldStockNumber,
+      new_number: newData.number,
+    },
+  });
 
   return {
     success: true,

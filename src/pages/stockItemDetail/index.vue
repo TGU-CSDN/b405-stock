@@ -8,6 +8,7 @@
         <Content
           :data="stockItemData"
           :stock-owners-data="stockOwnersData"
+          :stock-record-data="stockRecordData"
           @update="handleUpdated"
         />
       </view>
@@ -16,7 +17,11 @@
 </template>
 
 <script lang="ts">
-import { IStockItemOwnerInfo, IStockItemWithInfo } from "@/types/StockItem";
+import {
+  IStockItemOwnerInfo,
+  IStockItemWithInfo,
+  IStockRecord,
+} from "@/types/StockItem";
 import { defineComponent, Ref, ref } from "vue";
 import Top from "./components/Top/index.vue";
 import Content from "./components/Content/index.vue";
@@ -27,6 +32,17 @@ import { ActionTypes } from "@/enums/actionTypes";
 const stockItemID = ref("");
 const stockItemData: Ref<IStockItemWithInfo | null> = ref(null);
 const stockOwnersData: Ref<Array<IStockItemOwnerInfo>> = ref([]);
+const stockRecordData: Ref<Array<IStockRecord>> = ref([]);
+
+async function getItemRecordData() {
+  const res: any = await wx.cloud.callFunction({
+    name: "get_my_stock_record",
+    data: {
+      stock_id: stockItemID.value,
+    },
+  });
+  stockRecordData.value = res.result.data;
+}
 
 async function getItemOwnersData() {
   const res: any = await wx.cloud.callFunction({
@@ -47,7 +63,7 @@ async function getItemData() {
     },
   });
   stockItemData.value = res.result.data;
-  await getItemOwnersData();
+  await Promise.all([getItemRecordData(), getItemOwnersData()]);
   hideLoading();
 }
 
@@ -64,6 +80,7 @@ export default defineComponent({
     return {
       stockItemData,
       stockOwnersData,
+      stockRecordData,
       handleUpdated,
     };
   },
@@ -77,6 +94,7 @@ export default defineComponent({
     stockItemID.value = "";
     stockItemData.value = null;
     stockOwnersData.value = [];
+    stockRecordData.value = [];
   },
 });
 </script>
