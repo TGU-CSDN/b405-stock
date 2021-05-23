@@ -49,6 +49,9 @@ export default defineComponent({
     async function getMyStockNumber() {
       const res: any = await wx.cloud.callFunction({
         name: "get_my_stock",
+        data: {
+          stock_id: props.data._id,
+        },
       });
       const data = res.result.data;
       myStockNumberText.value = data.number.toString();

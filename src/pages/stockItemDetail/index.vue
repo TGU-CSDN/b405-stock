@@ -46,6 +46,10 @@ export default defineComponent({
   onShow() {
     getItemData();
   },
+  onUnload() {
+    stockItemID.value = "";
+    stockItemData.value = null;
+  },
 });
 </script>
 
