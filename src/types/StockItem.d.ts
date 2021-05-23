@@ -1,9 +1,8 @@
 import { IUser } from './User'
 
 export interface IStockItemOwnerInfo {
-  id: number;
-  on_sale: boolean;
-  stock_number: number;
+  _id: number;
+  number: number;
   price: number | null;
   user: IUser;
 }

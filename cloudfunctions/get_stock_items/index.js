@@ -9,15 +9,37 @@ const db = cloud.database();
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
 
-  const query = await db.collection("stock").get();
+  const $ = db.command.aggregate;
 
-  const data = query.data;
+  const query = await db
+    .collection("stock")
+    .aggregate()
+    .lookup({
+      from: "user_stock",
+      localField: "_id",
+      foreignField: "stock_id",
+      as: "user_stock",
+    })
+    .group({
+      _id: "$_id",
+      name: $.first("$name"),
+      image: $.first("$image"),
+      code: $.first("$code"),
+      stock_list: $.first("$user_stock"),
+    })
+    .project({
+      name: 1,
+      image: 1,
+      code: 1,
+      stock_list: 1,
+      stock_number: $.sum("$stock_list.number"),
+    })
+    .sort({
+      stock_number: -1,
+    })
+    .end();
 
-  // for development only
-  data.map((ele) => {
-    ele.stock_number = 0;
-    ele.stock_list = [];
-  });
+  const data = query.list;
 
   return {
     data,
