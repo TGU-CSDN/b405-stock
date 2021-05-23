@@ -15,7 +15,7 @@
     >
       <StockItemOwnerInfo
         v-for="item in tdata"
-        :key="item.id"
+        :key="item._id"
         :data="item"
       />
     </view>
@@ -23,7 +23,10 @@
       v-show="currentTab===1"
       class="my-stock"
     >
-      <MyStock :data="data" />
+      <MyStock
+        :data="data"
+        @update="handleUpdated"
+      />
     </view>
   </view>
 </template>
@@ -37,9 +40,8 @@ import UTabs from "@/components/UTabs/index.vue";
 
 const testData: Array<IStockItemOwnerInfo> = [
   {
-    id: 1,
-    on_sale: true,
-    stock_number: 3,
+    _id: "1",
+    number: 3,
     price: 3.5,
     user: {
       id: 1,
@@ -48,9 +50,8 @@ const testData: Array<IStockItemOwnerInfo> = [
     },
   },
   {
-    id: 2,
-    on_sale: false,
-    stock_number: 2,
+    _id: "2",
+    number: 2,
     price: null,
     user: {
       id: 2,
@@ -68,7 +69,8 @@ export default defineComponent({
       default: null,
     },
   },
-  setup() {
+  emits: ["update"],
+  setup(props, { emit }) {
     const tdata = ref(testData);
     const currentTab = ref(0);
     const tabs = ["库存列表", "我的库存"];
@@ -77,7 +79,11 @@ export default defineComponent({
       currentTab.value = index;
     }
 
-    return { tdata, currentTab, tabs, handleTabChange };
+    function handleUpdated() {
+      emit("update");
+    }
+
+    return { tdata, currentTab, tabs, handleTabChange, handleUpdated };
   },
 });
 </script>

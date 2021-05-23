@@ -31,7 +31,6 @@ exports.main = async (event, context) => {
       name: 1,
       image: 1,
       code: 1,
-      stock_list: 1,
       stock_number: $.sum("$stock_list.number"),
     })
     .sort({

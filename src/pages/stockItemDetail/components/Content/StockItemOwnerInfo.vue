@@ -9,7 +9,7 @@
         {{ data.user.name }}
       </div>
       <div class="item__desc__stock">
-        拥有 {{ data.stock_number }} 件
+        拥有 {{ data.number }} 件
       </div>
     </div>
     <div class="item__action">

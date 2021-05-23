@@ -1,7 +1,7 @@
 import { IUser } from './User'
 
 export interface IStockItemOwnerInfo {
-  _id: number;
+  _id: interface;
   number: number;
   price: number | null;
   user: IUser;
@@ -20,5 +20,4 @@ export interface IStockItemWithInfo {
   image: string;
   code: string;
   stock_number: number;
-  stock_list: Array<IStockItemOwnerInfo>;
 }

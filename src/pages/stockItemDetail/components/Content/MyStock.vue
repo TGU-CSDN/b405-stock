@@ -41,7 +41,8 @@ export default defineComponent({
       default: null,
     },
   },
-  setup(props) {
+  emits: ["update"],
+  setup(props, { emit }) {
     const isLoading = ref(false);
     const myStockNumberText = ref("0");
     const myStockPriceText = ref("0");
@@ -74,6 +75,7 @@ export default defineComponent({
           },
         });
         showToast("保存成功", "success");
+        emit("update");
       } catch (e) {
         console.error(e);
       }

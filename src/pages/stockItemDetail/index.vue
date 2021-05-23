@@ -5,7 +5,10 @@
         <Top :data="stockItemData" />
       </view>
       <view class="content">
-        <Content :data="stockItemData" />
+        <Content
+          :data="stockItemData"
+          @update="handleUpdated"
+        />
       </view>
     </view>
   </view>
@@ -17,6 +20,8 @@ import { defineComponent, Ref, ref } from "vue";
 import Top from "./components/Top/index.vue";
 import Content from "./components/Content/index.vue";
 import { showLoading, hideLoading } from "@/utils/helper";
+import { useStore } from "vuex";
+import { ActionTypes } from "@/enums/actionTypes";
 
 const stockItemID = ref("");
 const stockItemData: Ref<IStockItemWithInfo | null> = ref(null);
@@ -36,8 +41,16 @@ async function getItemData() {
 export default defineComponent({
   components: { Top, Content },
   setup() {
+    const store = useStore();
+
+    function handleUpdated() {
+      getItemData();
+      store.dispatch(ActionTypes.getStockList);
+    }
+
     return {
       stockItemData,
+      handleUpdated,
     };
   },
   onLoad(query: { id: string }) {
